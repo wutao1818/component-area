@@ -1,7 +1,7 @@
-import PicaArea from './PicaArea.vue';
+import WutaoArea from './WutaoArea.vue';
 
 const components = [
-  PicaArea,
+  WutaoArea,
 ];
 
 components.forEach((component) => {
@@ -11,5 +11,5 @@ components.forEach((component) => {
 })
 
 export {
-  PicaArea,
+  WutaoArea,
 }

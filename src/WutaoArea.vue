@@ -1,5 +1,5 @@
 <template>
-    <div class="select-wrapper">
+    <div v-if="value" class="select-wrapper">
         <div class="mask" @click="cancelSelect" @touchmove.prevent>
             <div class="address-wrap" @click.stop>
                 <div class="tip-header">
@@ -13,21 +13,21 @@
                     <ul class="show-address-header">
                         <li :class="{ active: isShowProvince }" class="item" @click="tabAddressClick(1)">
                             {{
-                          value.provinceName
-                            ? value.provinceName
+                          dataObj.provinceName
+                            ? dataObj.provinceName
                             : '请选择'
                             }}
                         </li>
-                        <li v-show="value.provinceName && rank>1" :class="{ active: isShowCity }" class="item" @click="tabAddressClick(2)">
-                            {{ value.cityName ? value.cityName : '请选择' }}
+                        <li v-show="dataObj.provinceName && rank>1" :class="{ active: isShowCity }" class="item" @click="tabAddressClick(2)">
+                            {{ dataObj.cityName ? dataObj.cityName : '请选择' }}
                         </li>
-                        <li v-show="value.cityName && rank>2" :class="{ active: isShowCounty }" class="item" @click="tabAddressClick(3)">
+                        <li v-show="dataObj.cityName && rank>2" :class="{ active: isShowCounty }" class="item" @click="tabAddressClick(3)">
                             {{
-                          value.countyName ? value.countyName : '请选择'
+                          dataObj.countyName ? dataObj.countyName : '请选择'
                             }}
                         </li>
-                        <li v-show="value.countyName && rank>3" :class="{ active: isShowTown }" class="item" @click="tabAddressClick(4)">
-                            {{ value.townName ? value.townName : '请选择' }}
+                        <li v-show="dataObj.countyName && rank>3" :class="{ active: isShowTown }" class="item" @click="tabAddressClick(4)">
+                            {{ dataObj.townName ? dataObj.townName : '请选择' }}
                         </li>
                     </ul>
                     <div class="address-content" @touchmove.stop>
@@ -87,7 +87,7 @@
           countyList: [],
           townList: []
         },
-        value: {
+        dataObj: {
           cityId: '',
           cityName: '',
           countyId: '',
@@ -106,9 +106,13 @@
       }
     },
     props: {
+      value: {
+        type: Boolean,
+        default: true
+      },
       baseUrl: {
         type: String,
-        default: 'https://api.wutao.com'
+        default: 'https://xxx.xxx.com'
       },
       rank: {
         type: Number | String,
@@ -125,7 +129,7 @@
           if (res.code === '000000') {
             this.areaList.provinceList = res.data.provinceList;
             this.areaList.provinceList.map(a => {
-              if (a.provinceId == this.value.provinceId) {
+              if (a.provinceId == this.dataObj.provinceId) {
                 a.selected = true
               }
             });
@@ -139,7 +143,7 @@
           if (res.code === '000000') {
             this.areaList.cityList = res.data.cityList;
             this.areaList.cityList.map(a => {
-              if (a.cityId == this.value.cityId) {
+              if (a.cityId == this.dataObj.cityId) {
                 a.selected = true
               }
             });
@@ -153,7 +157,7 @@
           if (res.code === '000000') {
             this.areaList.countyList = res.data.countyList;
             this.areaList.countyList.map(a => {
-              if (a.countyId == this.value.countyId) {
+              if (a.countyId == this.dataObj.countyId) {
                 a.selected = true
               }
             });
@@ -167,7 +171,7 @@
           if (res.code === '000000') {
             this.areaList.townList = res.data.townList;
             this.areaList.townList.map(a => {
-              if (a.townId == this.value.townId) {
+              if (a.townId == this.dataObj.townId) {
                 a.selected = true
               }
             });
@@ -183,24 +187,24 @@
       //      countryCallback(countyId) {
       //        this.getTownData(countyId);
       //      },
-      //选择省份的操作
+      //选择省份的操作，以下从其他业务组件拷贝过来===开始===
       provinceSelect(item, idx) {
-        this.value.provinceId = item.provinceId;
-        this.value.provinceName = item.provinceName;
-        this.value.patientAddress = '';
-        this.value.cityId = null;
-        this.value.cityName = '';
-        this.value.countyId = null;
-        this.value.countyName = '';
-        this.value.townId = null;
-        this.value.townName = '';
+        this.dataObj.provinceId = item.provinceId;
+        this.dataObj.provinceName = item.provinceName;
+        this.dataObj.patientAddress = '';
+        this.dataObj.cityId = null;
+        this.dataObj.cityName = '';
+        this.dataObj.countyId = null;
+        this.dataObj.countyName = '';
+        this.dataObj.townId = null;
+        this.dataObj.townName = '';
         //控制省市县乡数据展示与隐藏
         this.isShowProvince = false;
         this.isShowCounty = false;
         this.isShowTown = false;
         if(this.rank>1){
           this.isShowCity = true;
-          this.getCityData(this.value.provinceId);
+          this.getCityData(this.dataObj.provinceId);
           this.isDisabled = true;
         }else{
           this.isDisabled = false;
@@ -211,20 +215,20 @@
       },
       //选择市的操作
       citySelect(item, idx) {
-        this.value.cityId = item.cityId;
-        this.value.cityName = item.cityName;
-        this.value.patientAddress = '';
-        this.value.countyId = null;
-        this.value.countyName = '';
-        this.value.townId = null;
-        this.value.townName = '';
+        this.dataObj.cityId = item.cityId;
+        this.dataObj.cityName = item.cityName;
+        this.dataObj.patientAddress = '';
+        this.dataObj.countyId = null;
+        this.dataObj.countyName = '';
+        this.dataObj.townId = null;
+        this.dataObj.townName = '';
         //控制省市县乡数据展示与隐藏
         this.isShowProvince = false;
         this.isShowCity = false;
         this.isShowTown = false;
         if(this.rank>2){
           this.isShowCounty = true;
-          this.getCountyData(this.value.cityId);
+          this.getCountyData(this.dataObj.cityId);
           this.isDisabled = true;
         }else{
           this.isDisabled = false;
@@ -235,18 +239,18 @@
       },
       //选择区/县的操作
       countySelect(item, idx) {
-        this.value.countyId = item.countyId;
-        this.value.countyName = item.countyName;
-        this.value.townId = null;
-        this.value.townName = '';
-        this.value.patientAddress = '';
+        this.dataObj.countyId = item.countyId;
+        this.dataObj.countyName = item.countyName;
+        this.dataObj.townId = null;
+        this.dataObj.townName = '';
+        this.dataObj.patientAddress = '';
         //控制省市县乡数据展示与隐藏
         this.isShowProvince = false;
         this.isShowCity = false;
         this.isShowCounty = false;
         if(this.rank>3){
           this.isShowTown = true;
-          this.getTownData(this.value.countyId);
+          this.getTownData(this.dataObj.countyId);
           this.isDisabled = true;
         }else{
           this.isDisabled = false;
@@ -257,9 +261,9 @@
       },
       //选择乡镇的操作
       townSelect(item, idx) {
-        this.value.townId = item.townId;
-        this.value.townName = item.townName;
-        this.value.patientAddress = `${this.value.provinceName}${this.value.cityName}${this.value.countyName}${this.value.townName}`;
+        this.dataObj.townId = item.townId;
+        this.dataObj.townName = item.townName;
+        this.dataObj.patientAddress = `${this.dataObj.provinceName}${this.dataObj.cityName}${this.dataObj.countyName}${this.dataObj.townName}`;
         // 当前选中的样式
         this.areaList.townList.map(a => a.selected = false);
         this.areaList.townList[idx].selected = true;
@@ -288,11 +292,14 @@
           this.isShowTown = true;
         }
       },
+      // 从其他业务组件拷贝过来===结束===
       confirm() {
-        this.$emit('confirm', this.value);
+        this.$emit('confirm', this.dataObj);
+        this.$emit('input', false);
       },
       cancelSelect() {
         this.$emit('cancel', false);
+        this.$emit('input', false);
       },
     }
   }

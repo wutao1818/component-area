@@ -2,12 +2,12 @@
 
 ```javascript
 支持按需引入的方式：
-import { PicaArea } from 'pica-area';
+import { WutaoArea } from 'wutao-area';
 
-Vue.use(PicaArea);
+Vue.use(WutaoArea);
 
 页面：
-<PicaArea
+<WutaoArea
   :base-url="baseUrl"
   :rank="3"
   @cancel="cancel"
@@ -15,7 +15,7 @@ Vue.use(PicaArea);
 />
 
 v1.1.0 之后可以如下使用
-<PicaArea
+<WutaoArea
   v-model="showArea"
   @confirm="confirm"
 />
