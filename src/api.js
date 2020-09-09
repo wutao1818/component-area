@@ -5,7 +5,7 @@ import Vue from 'vue';
 Vue.use(Toast);
 
 
-const baseUrl = localStorage.getItem('baseUrl_v2') || 'https://api.wutao.com';
+const baseUrl = localStorage.getItem('baseUrl_v2') || 'https://sc.yunqueyi.com';
 
 
 const instance = axios.create({

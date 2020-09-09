@@ -2,15 +2,21 @@
 
 ```javascript
 支持按需引入的方式：
-import { WutaoArea } from 'wutao-area';
+import { PicaArea } from 'pica-area';
 
-Vue.use(WutaoArea);
+Vue.use(PicaArea);
 
 页面：
-<WutaoArea
+<PicaArea
   :base-url="baseUrl"
   :rank="3"
   @cancel="cancel"
+  @confirm="confirm"
+/>
+
+v1.1.0 之后可以如下使用
+<PicaArea
+  v-model="showArea"
   @confirm="confirm"
 />
 
@@ -20,6 +26,7 @@ props
 
 |  属性  | 说明   |  类型    |
 | ------ | ------ | ------ |
+|  v-model  | 是否显示组件 |   boolean    |
 |  base-url  | 域名 |   string    |
 |  rank  | 联动层级 |   [string, number] 数字对应的联动层级 1省份  2城市 3区县 4乡镇    |
 
