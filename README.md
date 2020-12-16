@@ -19,7 +19,7 @@ v1.1.0 之后可以如下使用
   v-model="showArea"
   @confirm="confirm"
 />
-
+ 
 ```
 
 props
